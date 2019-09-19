@@ -7,7 +7,7 @@ serversocket = socket.socket(
 	        socket.AF_INET, socket.SOCK_STREAM) 
 
 # get local machine name
-host = '192.168.1.16'                           
+host = '172.16.65.251'                           
 
 port = 9999                                           
 
@@ -25,12 +25,10 @@ while True:
     currentTime = time.ctime(time.time()) + "\r\n"
     clientsocket.send(currentTime.encode('ascii'))
     try:
-        msg = input() + "\r\n"
-        clientsocket.send(msg.encode('ascii'))
         while True:
             msg = clientsocket.recv(10)
-            print(msg)
+            print(msg.decode('ascii').rstrip())
 
     except KeyboardInterrupt:
-        continue
+        break
     clientsocket.close()
