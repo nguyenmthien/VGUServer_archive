@@ -11,25 +11,25 @@ connection = sqlite3.connect("myTable.db")
 crsr = connection.cursor() 
   
 # SQL command to create a table in the database 
-sql_command = """CREATE TABLE emp (  
-staff_number INTEGER PRIMARY KEY,  
-fname VARCHAR(20),  
-lname VARCHAR(30),  
-gender CHAR(1),  
-joining DATE);"""
+#sql_command = """CREATE TABLE emp (  
+#staff_number INTEGER PRIMARY KEY,  
+#fname VARCHAR(20),  
+#lname VARCHAR(30),  
+#gender CHAR(1),  
+#joining DATE);"""
   
 # execute the statement 
-crsr.execute(sql_command) 
+#crsr.execute(sql_command) 
   
 # SQL command to insert the data in the table 
-sql_command = """INSERT INTO emp VALUES (23, "Rishabh", "Bansal", "M", "2014-03-28");"""
+sql_command = """INSERT INTO emp VALUES (122, "Rishabh", "Bansal", "M", "2014-03-28");"""
 crsr.execute(sql_command) 
   
 # another SQL command to insert the data in the table 
-sql_command = """INSERT INTO emp VALUES (1, "Bill", "Gates", "M", "1980-10-28");"""
+sql_command = """INSERT INTO emp VALUES (133, "Bill", "Gates", "M", "1980-10-28");"""
 crsr.execute(sql_command) 
 # thien 
-sql_command = """INSERT INTO emp VALUES (20, "Thien", "Nguyen", "F", "1-1-99");"""
+sql_command = """INSERT INTO emp VALUES (443, "Lll", "Nguyen", "F", "1-1-99");"""
 crsr.execute(sql_command)
   
 # To save the changes in the files. Never skip this.  
