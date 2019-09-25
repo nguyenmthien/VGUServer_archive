@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 # *_* coding: utf-8 *_*
 
-"""Contain functions to create and manipulate a db"""
+"""Contain functions to create and manipulate a db
+createdb(mode, name): create a database named name
+writetherm: write the temperature and humidity into the database."""
 
 
 import sqlite3
 import time
 
 def createdb(mode, name):
-    """If mode == "thermo", create table with name in for data from sensors"""
+    """If mode == "thermo", create table with name for data from sensors"""
     if mode == "thermo":
         connection = sqlite3.connect(name) 
         crsr = connection.cursor()
