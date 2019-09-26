@@ -1,19 +1,16 @@
-from socket_server import *
+import socket_server
 import time
 
-test = server1("127.0.0.1", 9988)
-check = True
+test = socket_server.tcp_server("192.168.1.7", 2033)
 
 while True:
     
     test.create_sockets()
-    #time.sleep(1)
     client_num = int(input("Enter the client number: "))
-    #client_num = 1
     test.create_sockets()
     try:
         test.sendmsg("haha", client_num)
         time.sleep(1)
         test.recvmsg(client_num)
     except:
-        print("Not exist the client")
+        print("The client does not exist!")

@@ -1,8 +1,14 @@
+#!/usr/bin/env python3
+# *_* coding: utf-8 *_*
+
+"""An attemp to make an OOP version of example.py"""
+
 import socket
 import select
 import time
 
 def receive_message(client_socket):
+    """Does this function needed?, if yes, please put a docstring in here"""
     try:
         mess = client_socket.recv(10)
         if not len(mess):
@@ -12,7 +18,8 @@ def receive_message(client_socket):
     except:
         return False
 
-class server1:
+class tcp_server:
+    """This is a docstring"""
     count = 1
     #HEADER_LENGTH = 10
     def __init__(self,IP,PORT):
@@ -34,8 +41,8 @@ class server1:
         
                 client_socket, client_address = self.server_socket.accept()
                 self.sockets_list.append(client_socket)
-                self.clients[client_socket] = server1.count
-                server1.count += 1
+                self.clients[client_socket] = tcp_server.count
+                tcp_server.count += 1
                 #print(self.sockets_list)
                 
         for notified_socket in exception_sockets:
@@ -44,8 +51,7 @@ class server1:
             
     def sendmsg(self, mess, num):
         
-        x = self.sockets_list[num]
-        x.send(mess.encode('utf-8'))
+        self.sockets_list[num].send(mess.encode('utf-8'))
         
     def recvmsg(self, num):
         message = receive_message(self.sockets_list[num])
@@ -54,6 +60,6 @@ class server1:
         elif message == '':
             print("hihi")  
         else:    
-            print('Message: {}'.format(message.decode("utf-8")))
+            print(f'Message from client no. {num}: {message.decode("utf-8")}')
             message = ''
         #else: print("Client is closed")
