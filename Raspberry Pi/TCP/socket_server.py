@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# *_* coding: ascii *_*
+# *_* coding: utf-8 *_*
 
 """An attemp to make an OOP version of example.py"""
 
@@ -69,7 +69,7 @@ class tcp_server:
     def send_all(self, mess):
         for key in self.id_dict:
             if  (self.id_dict[key] != 'UPS') and (self.id_dict[key] != 'AC') and (key != self.server_socket):
-                key.send(mess.encode('ascii'))
+                key.send(mess.encode('utf-8'))
 
     def therm_parsing(self, mess):
         """Split a message from a client into 2 variables"""
@@ -93,8 +93,8 @@ class tcp_server:
                         continue
                     message = message.strip()
                     temp, humid = self.therm_parsing(message)
-                    mess_dict['Temp'] = temp.decode('ascii')
-                    mess_dict['Humid'] = humid.decode('ascii')
+                    mess_dict['Temp'] = temp.decode('utf-8')
+                    mess_dict['Humid'] = humid.decode('utf-8')
                     return_list.append(mess_dict)
 
         return return_list
