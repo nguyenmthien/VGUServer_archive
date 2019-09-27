@@ -8,8 +8,8 @@ const int16_t I2C_MASTER = 0x02;
 const int16_t I2C_SLAVE = 0x40;
 
 WiFiClient client;
-const int port = 9876;
-const char* host = "192.168.1.15";
+const int port = 2033;
+const char* host = "192.168.1.4";
 
 void setupi2c();
 void setupWiFi();
@@ -26,11 +26,15 @@ void loop()
 {
     if (client.available())
     {
-        client.read();
+        while (client.available())
+        {
+            client.read();
+        }
         float temp = readi2c(0xF3);
         float humid = readi2c(0xF5);
-        client.print(temp);
-        client.print(humid);
+        String message = "";
+        message = String(temp, 4) + " " + String(humid, 2);
+        client.print(message);
     }
 }
 
