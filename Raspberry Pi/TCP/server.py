@@ -3,8 +3,8 @@ import select
 
 HEADER_LENGTH = 10
 
-IP = "127.0.0.1"
-PORT = 9990
+IP = "192.168.1.4"
+PORT = 2034
 count = 0
 
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -49,8 +49,10 @@ while True:
                 sockets_list.remove(notified_socket)
                 del clients[notified_socket]
                 continue
-
-            print(f'Received message: {message["data"].decode("utf-8")}')
+            message["data"] = message["data"].decode('utf-8')
+            #if message["data"] == '\r\n':
+            #   continue
+            print(f'Received message: {message["data"].rstrip()}')
             
     for notified_socket in exception_sockets:
         

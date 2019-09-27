@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
-# *_* coding: utf-8 *_*
+# *_* coding: ascii *_*
 
 """An attemp to make an OOP version of example.py"""
 
 import socket
 import select
 import time
+class custom_error(Exception):
+    """Custom TCP Error"""
+    pass
 
 def receive_message(client_socket):
     """Does this function needed?, if yes, please put a docstring in here"""
     try:
-        mess = client_socket.recv(128)
-        if (not len(mess)) or (len(mess) <= 2):
+        mess = client_socket.recv(1024)
+        if (not len(mess)):
             return False
+        elif (len(mess) <= 2) or (mess == '\r\n'):
+            return
         return mess
     
     except:
@@ -26,9 +31,10 @@ class tcp_server:
         self.IP = IP
         self.PORT = PORT
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        #self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        self.server_socket.setblocking(0)
         self.server_socket.bind((self.IP, self.PORT))
-        self.server_socket.listen()
+        self.server_socket.listen(5)
         self.sockets_list = [self.server_socket]
         self.id_dict = {}
         self.msg = {}
@@ -39,19 +45,17 @@ class tcp_server:
 
     def update_sockets_list(self):
         """Update sockets list to read_sockets, write_sockets, exception_sockets"""
-        self.read_sockets = []
-        self.write_sockets = []
-        self.exception_sockets = []
-        self.read_sockets, self.write_sockets, self.exception_sockets = select.select(self.sockets_list, [], self.sockets_list)
+        self.read_sockets, self.write_sockets, self.exception_sockets = select.select(self.sockets_list, self.sockets_list, [], 0)
 
     def check_read_sockets(self):
         """Handle new connection after updating socket lists"""    
         for notified_socket in self.read_sockets:
             if notified_socket == self.server_socket:
-                raise Exception('New Connection')
+                raise custom_error('New Connection')
 
     def new_socket_handle(self, id):
         client_socket, client_address = self.server_socket.accept()
+        client_socket.setblocking(0)
         self.sockets_list.append(client_socket)
         #self.clients[client_socket] = tcp_server.count
         #tcp_server.count += 1
@@ -61,15 +65,11 @@ class tcp_server:
         '''for notified_socket in self.exception_sockets:
             self.sockets_list.remove(notified_socket)
             del self.clients[notified_socket]'''
-            
-    def sendmsg(self, mess, id):
-        """Send a message to a specific client"""
-        #self..send(mess.encode('utf-8'))
     
-    def sendall(self, mess):
+    def send_all(self, mess):
         for key in self.id_dict:
-            if  (self.id_dict[key] != 'UPS') and (self.id_dict[key] != 'AC'):
-                key.send(mess.encode('utf-8'))
+            if  (self.id_dict[key] != 'UPS') and (self.id_dict[key] != 'AC') and (key != self.server_socket):
+                key.send(mess.encode('ascii'))
 
     def therm_parsing(self, mess):
         """Split a message from a client into 2 variables"""
@@ -77,8 +77,9 @@ class tcp_server:
         if len(mess_list) == 2:
             return mess_list[0], mess_list[1]
 
-    def recvall(self):
+    def recv_all(self):
         """Receive all messages from clients"""
+        self.update_sockets_list()
         return_list = []
         for notified_socket in self.read_sockets:
             if notified_socket != self.server_socket:
@@ -88,20 +89,12 @@ class tcp_server:
                     if message is False:
                         self.sockets_list.remove(notified_socket)
                         continue
+                    elif message == None:
+                        continue
+                    message = message.strip()
                     temp, humid = self.therm_parsing(message)
-                    mess_dict['Temp'] = temp.decode('utf-8')
-                    mess_dict['Humid'] = humid.decode('utf-8')
+                    mess_dict['Temp'] = temp.decode('ascii')
+                    mess_dict['Humid'] = humid.decode('ascii')
                     return_list.append(mess_dict)
 
         return return_list
-
-    def recvmsg(self, num):
-        message = receive_message(self.sockets_list[num])
-        if message is False:
-            print("Error")
-        elif message == '':
-            print("hihi")  
-        else:    
-            print(f'Message from client no. {num}: {message.decode("utf-8")}')
-            message = ''
-        #else: print("Client is closed")

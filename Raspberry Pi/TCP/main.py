@@ -1,24 +1,28 @@
 import socket_server
 import time
+import database
 
 vguserver = socket_server.tcp_server("192.168.1.4", 2033)
 last_t = time.time()
+database.createdb("thermo", "vgu.db")
 
 while True:
     vguserver.update_sockets_list()
     try:
         vguserver.check_read_sockets()
-    except:
+    except socket_server.custom_error:
         id = input("Enter ID: ")
         vguserver.new_socket_handle(id)    
-    message_list = vguserver.recvall()
+    message_list = vguserver.recv_all()
+    t = time.time()
     if message_list != []:
         print(message_list)
-    vguserver.sendall("abc")
-    '''t = time.time()
-    if (t - last_t) > 3:
-        vguserver.sendall("abc")
-        last_t = t'''
+        for dictionary in message_list:
+            database.writetherm("vgu.db", dictionary['ID'], dictionary['Temp'], dictionary['Humid'])
+    #vguserver.send_all("abc")
+    if (t - last_t) > 5:
+        vguserver.send_all("ab")
+        last_t = t
 
 
 
