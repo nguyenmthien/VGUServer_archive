@@ -51,56 +51,69 @@
                 font_size: 18
                 password: True
                 write_tab: False
-                on_text_validate: 
-                    root.manager.transition.direction = 'left' 
-                    root.check_login()
+                on_text_validate: root.check_login()
             Button:
                 id: login_button
                 text: 'Log In'
                 size_hint: 0.5, 0.15
                 pos_hint: {"center_x":0.5,"top":0.2}
                 font_size: 18 
-                on_release: 
-                    root.manager.transition.direction = 'left'
-                    root.check_login()
+                on_release: root.check_login()
             Label:
-
+<Taskbar>:
+    size_hint_y: None
+    orientation: 'horizontal'
+    Button:
+        text: 'Home'
+        font_size: 18
+        on_release: root.btn_home()
+    Button:
+        text: 'Report'
+        font_size: 18
+        on_release: root.btn_report()
+    Button:
+        text: 'AC Control'
+        font_size: 18
+        on_release: root.btn_ac()
+    Button:
+        text: 'Email'
+        font_size: 18
+        on_release: root.btn_email()
+    Button:
+        text: 'Settings'
+        font_size: 18
+        on_release: root.btn_settings()
+    Button:
+        text: 'Log'
+        font_size: 18
+        on_release: root.btn_log()
 <Status>:
     FloatLayout:
         DateTime:
             size_hint: 1, 0.2
             pos_hint: {"top": 1}
-        BoxLayout:
-            size_hint_y: None
-            orientation: 'horizontal'
-            Button:
-                #size_hint: 0.5, 0.3
-                #pos_hint: {"center_x":0.5}
-                text: 'Back'
-                on_release:
-                    root.manager.transition.direction = 'right'
-                    root.manager.current = "login"
-            Button:
-                text: 'AC Control'
-                on_release:
-                    root.manager.transition.direction = 'right'
-                    root.manager.current = "ac"
-            Button:
-                text: 'Email'
-                on_release:
-                    root.manager.transition.direction = 'right'
-                    root.manager.current = "email"
-            Button:
-                text: 'Settings'
-                on_release:
-                    root.manager.transition.direction = 'right'
-                    root.manager.current = "settings"
+        Taskbar:
+            size: root.width, root.height/5
 
 <ACControl>:
-
+    FloatLayout:
+        Taskbar:
+            size: root.width, root.height/5
 <Email>:
-  
-<Settings>:
- 
+    FloatLayout:
+        Taskbar:
+            size: root.width, root.height/5
+<Setting>:
+    FloatLayout:
+        Taskbar:
+            size: root.width, root.height/5
+<Report>:
+    FloatLayout:
+        Taskbar:
+            size: root.width, root.height/5
+<Log>:
+    FloatLayout:
+        Taskbar:
+            size: root.width, root.height/5
 
             
