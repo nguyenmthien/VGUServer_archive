@@ -1,13 +1,15 @@
 import sqlite3
+import time
 def fetchnewest(dbname, tbname):
-    connection = sqlite3.connect(dbname)
-    row = []
-    with connection:
+    """Get latest row of table tbname in file dbname"""
+    with sqlite3.connect(dbname) as connection:
         crsr = connection.cursor()    
-        crsr.execute(f'SELECT * FROM {tbname}')
-        row = crsr.fetchall()  
-    return row[len(row)-1]
+        crsr.execute(f'SELECT * FROM {tbname} ORDER BY time desc')
+        row = crsr.fetchone()
+    return row
 
-#testing
+
 if __name__ == '__main__':
-    print(fetchnewest('my.db','therm'))
+    t = time.time()
+    print(fetchnewest('vgu.db','therm'))
+    print(f"Time ellapsed: {time.time()-t} s")
