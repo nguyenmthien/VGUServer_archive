@@ -44,7 +44,7 @@ def writetherm(db_name, sensor_name, temp, humid):
     connection.close()
 
 def writeuser(db_name, username, password):
-    """Write the username and [humidity] to db"""
+    """Write the username and password to db"""
     connection = sqlite3.connect(db_name) 
     crsr = connection.cursor() 
     current_time = int(time.time())
