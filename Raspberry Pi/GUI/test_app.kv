@@ -1,0 +1,106 @@
+#:kivy 1.11.1
+    
+<DateTime>:
+    orientation: 'horizontal'
+    Label:
+        id: my_time
+        text: root.now_time.text
+        font_size: 20
+    Label:
+        id: my_date
+        text: root.now_date.text
+        font_size: 20   
+
+<LoginPage>:
+    FloatLayout:
+        DateTime:
+            size_hint: 1, 0.2
+            pos_hint: {"top": 1}
+        Label:
+            size_hint: 1, 0.2
+            pos_hint: {"top": 0.85}
+            text: 'Welcome'
+            font_size: 32 
+        FloatLayout:
+            Label:
+                size_hint: 0.5, 0.1
+                id: info
+                text: ''
+                markup: True
+                bold: True
+            TextInput:
+                id: username
+                hint_text: 'Username'
+                text: 'abc'
+                halign: 'center'
+                size_hint: 0.5, 0.1
+                pos_hint: {"center_x":0.5,"top":0.6}
+                font_size: 18
+                focus: True
+                multiline: False
+                write_tab: False
+                on_text_validate: password.focus = True
+            TextInput:
+                id: password
+                hint_text: 'Password'
+                text: '123'
+                halign: 'center'
+                size_hint: 0.5, 0.1
+                pos_hint: {"center_x":0.5,"top":0.45}
+                multiline: False
+                font_size: 18
+                password: True
+                write_tab: False
+                on_text_validate: 
+                    root.manager.transition.direction = 'left' 
+                    root.check_login()
+            Button:
+                id: login_button
+                text: 'Log In'
+                size_hint: 0.5, 0.15
+                pos_hint: {"center_x":0.5,"top":0.2}
+                font_size: 18 
+                on_release: 
+                    root.manager.transition.direction = 'left'
+                    root.check_login()
+            Label:
+
+<Status>:
+    FloatLayout:
+        DateTime:
+            size_hint: 1, 0.2
+            pos_hint: {"top": 1}
+        BoxLayout:
+            size_hint_y: None
+            orientation: 'horizontal'
+            Button:
+                #size_hint: 0.5, 0.3
+                #pos_hint: {"center_x":0.5}
+                text: 'Back'
+                on_release:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = "login"
+            Button:
+                text: 'AC Control'
+                on_release:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = "ac"
+            Button:
+                text: 'Email'
+                on_release:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = "email"
+            Button:
+                text: 'Settings'
+                on_release:
+                    root.manager.transition.direction = 'right'
+                    root.manager.current = "settings"
+
+<ACControl>:
+
+<Email>:
+  
+<Settings>:
+ 
+
+            
