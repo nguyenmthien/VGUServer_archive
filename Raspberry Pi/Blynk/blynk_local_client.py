@@ -1,5 +1,5 @@
 import blynklib
-import random
+import database
 
 BLYNK_AUTH = 'AoQoa96Q5BolVXfrlreEnfbe8VdlDx-6'
 
@@ -13,7 +13,7 @@ READ_PRINT_MSG = "[READ_VIRTUAL_PIN_EVENT] Pin: V{}"
 @blynk.handle_event('read V1')
 def read_virtual_pin_handler(pin):
     print(READ_PRINT_MSG.format(pin))
-    blynk.virtual_write(pin, random.randint(0, 40))
+    blynk.virtual_write(pin, database.fetchnewest('vgu.db','therm')[2])
 
 
 ###########################################################
