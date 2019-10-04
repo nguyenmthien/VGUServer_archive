@@ -3,14 +3,15 @@
 <DateTime>:
     orientation: 'horizontal'
     Label:
-        id: my_time
-        text: root.now_time.text
+        #id: my_time
+        text: root.now_time.text 
         font_size: 20
+        color: (0.365, 0.678, 0.925, 1)
     Label:
-        id: my_date
+        #id: my_date
         text: root.now_date.text
         font_size: 20   
-
+        color: (0.365, 0.678, 0.925, 1)
 <LoginPage>:
     FloatLayout:
         DateTime:
@@ -19,8 +20,10 @@
         Label:
             size_hint: 1, 0.2
             pos_hint: {"top": 0.85}
-            text: 'Welcome'
+            text: 'VGU Server IoT Kit'
+            bold: True
             font_size: 32 
+            color: (0.365, 0.678, 0.925, 1)
         FloatLayout:
             Label:
                 size_hint: 0.5, 0.1
@@ -60,32 +63,50 @@
                 font_size: 18 
                 on_release: root.check_login()
             Label:
+<TaskbarButton@Button>:
+    font_size: 18
+    background_color: (1, .404, 0, 1)
+    background_normal: ''
+    background_donw: ''
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+<UnderInfo@Label+BackgroundColor>:
+    size_hint: 1, 0.07
+    pos_hint: {"center_x": 0.5, "y":0}
+    text: "Nguyen Minh Thien - Dang Van Phuoc - Le Huu Tuan Huy - Tran Gia Phuc - EEIT 2017"
+    font_size: 17
+    #color: (0.365, 0.678, 0.925, 1)
+    #bold: True  
+    background_color: (0.122, 0.459, 0.996, 1)
+    #background_normal: ''
 <Taskbar>:
     size_hint_y: None
+    pos_hint: {"y":0.07}
     orientation: 'horizontal'
-    Button:
+    TaskbarButton:
         text: 'Home'
-        font_size: 18
         on_release: root.btn_home()
-    Button:
+         
+    TaskbarButton:
         text: 'Report'
-        font_size: 18
         on_release: root.btn_report()
-    Button:
+    TaskbarButton:
         text: 'AC Control'
-        font_size: 18
         on_release: root.btn_ac()
-    Button:
+    TaskbarButton:
         text: 'Email'
-        font_size: 18
         on_release: root.btn_email()
-    Button:
+    TaskbarButton:
         text: 'Settings'
-        font_size: 18
         on_release: root.btn_settings()
-    Button:
+    TaskbarButton:
         text: 'Log'
-        font_size: 18
         on_release: root.btn_log()
 <Status>:
     FloatLayout:
@@ -94,26 +115,32 @@
             pos_hint: {"top": 1}
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
 
 <ACControl>:
     FloatLayout:
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
 <Email>:
     FloatLayout:
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
 <Setting>:
     FloatLayout:
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
 <Report>:
     FloatLayout:
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
 <Log>:
     FloatLayout:
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
 
             

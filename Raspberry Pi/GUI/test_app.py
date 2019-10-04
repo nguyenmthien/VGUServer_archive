@@ -13,7 +13,7 @@ import time
 
 Builder.load_file('test_app.kv')
 kivy.require("1.11.1")
-Window.clearcolor = (.06, .45, .45, 1)
+Window.clearcolor = (.827, .827, .827, 1)
 
 
 class Time(Label):
@@ -23,9 +23,9 @@ class Time(Label):
 class DateTime(BoxLayout):
     now_time = Time()
     now_date = Time()
-    now_time.text = time.strftime('%H %M %S')
+    now_time.text = time.strftime('%H:%M:%S')
     now_date.text = time.strftime('%d %B %Y')
-    #Clock.schedule_interval(now_time.update,1)
+    Clock.schedule_interval(now_time.update,1)
 
 class Taskbar(BoxLayout):
     def btn_home(self):
