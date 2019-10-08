@@ -1,10 +1,12 @@
 import kivy
 from kivy.app import App
-from kivy.config import Config
+#from kivy.config import Config
+from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTransition
+from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 #Clock.max_iteration = 20
 from kivy.lang import Builder
@@ -15,23 +17,33 @@ Builder.load_file('test_app.kv')
 kivy.require("1.11.1")
 Window.clearcolor = (.827, .827, .827, 1)
 
+class DefaultLabel(Label):
+    pass
 
-class Time(Label):
+class Time(DefaultLabel):
     def update(self, *args):
         self.text = time.strftime('%H:%M:%S')
 
-class DateTime(BoxLayout):
+class TimeInfo(DefaultLabel):
     now_time = Time()
-    now_date = Time()
     now_time.text = time.strftime('%H:%M:%S')
-    now_date.text = time.strftime('%d %B %Y')
     Clock.schedule_interval(now_time.update,1)
+
+class DateInfo(DefaultLabel):
+    now_date = Time()
+    now_date.text = time.strftime('%d %B %Y')
+    Clock.schedule_interval(now_date.update,1)
+
+class DateTime(BoxLayout):
+    pass
+class StatusBar(BoxLayout):
+    pass
 
 class Taskbar(BoxLayout):
     def btn_home(self):
         screen_manager.transition = SlideTransition()
         screen_manager.transition.direction = 'right'
-        screen_manager.current = 'status'
+        screen_manager.current = 'home'
     def btn_ac(self):
         screen_manager.transition = NoTransition()
         screen_manager.current = 'ac'
@@ -53,13 +65,15 @@ class LoginPage(Screen):
         user_text = self.ids.username.text
         password_text = self.ids.password.text
         if user_text == "abc" and password_text == "123":
-            screen_manager.current = "status" 
+            screen_manager.transition = SlideTransition(direction='left')
+            screen_manager.current = "home" 
+            
         else:
             info = self.ids.info
             info.text = '[color=#FF0000]Username and password not found[/color]'
 
 
-class Status(Screen):
+class Home(Screen):
     pass
 
 class ACControl(Screen):
@@ -78,7 +92,7 @@ class Log(Screen):
     pass
 
 screen_manager = ScreenManager()
-screens = [LoginPage(name="login"),Status(name="status"),Report(name="report"),ACControl(name="ac"),Email(name="email"),Setting(name="setting"),Log(name="log")]
+screens = [LoginPage(name="login"),Home(name="home"),Report(name="report"),ACControl(name="ac"),Email(name="email"),Setting(name="setting"),Log(name="log")]
 for screen in screens:
     screen_manager.add_widget(screen)
 screen_manager.current = "login"
