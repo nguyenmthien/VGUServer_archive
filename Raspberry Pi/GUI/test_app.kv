@@ -1,26 +1,51 @@
 #:kivy 1.11.1
-    
+
+<DefaultLabel@Label>:
+    font_size: 20
+    color: (0.365, 0.678, 0.925, 1)
+
 <DateTime>:
+    BoxLayout:    
+        orientation: 'horizontal'
+        TimeInfo:
+            text: self.now_time.text
+        DateInfo:
+            text: self.now_date.text
+
+<StatusBar>:
     orientation: 'horizontal'
-    Label:
-        id: my_time
-        text: root.now_time.text
-        font_size: 20
-    Label:
-        id: my_date
-        text: root.now_date.text
-        font_size: 20   
+    TimeInfo:
+        text: self.now_time.text
+    DefaultLabel:
+        text: 'VGU Server IoT Kit'
+        bold: True
+    DateInfo:
+        text: self.now_date.text
+    Button:
+        #size: (200,15)
+        size_hint_x: 0.38
+        text: 'X'
+        bold: True
+        font_size: 28
+        color: (0,0,0,1)
+        background_color: (1,0,0,1)
+        background_normal: ''
+        on_release: 
+            app.root.current = 'login'
+            app.root.transition.direction = 'right'
 
 <LoginPage>:
     FloatLayout:
         DateTime:
-            size_hint: 1, 0.2
+            size_hint: 1, 0.18
             pos_hint: {"top": 1}
         Label:
             size_hint: 1, 0.2
             pos_hint: {"top": 0.85}
-            text: 'Welcome'
+            text: 'VGU Server IoT Kit'
+            bold: True
             font_size: 32 
+            color: (0.365, 0.678, 0.925, 1)
         FloatLayout:
             Label:
                 size_hint: 0.5, 0.1
@@ -60,60 +85,106 @@
                 font_size: 18 
                 on_release: root.check_login()
             Label:
+
+<TaskbarButton@Button>:
+    font_size: 18
+    background_color: (1, .404, 0, 1)
+    background_normal: ''
+    #background_down: ''
+
+<BackgroundColor@Widget>
+    background_color: 1, 1, 1, 1
+    canvas.before:
+        Color:
+            rgba: root.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
+<UnderInfo@Label+BackgroundColor>:
+    size_hint: 1, 0.07
+    pos_hint: {"center_x": 0.5, "y":0}
+    text: "Nguyen Minh Thien - Dang Van Phuoc - Le Huu Tuan Huy - Tran Gia Phuc - EEIT 2017"
+    font_size: 17
+    #color: (0.365, 0.678, 0.925, 1)
+    background_color: (0.122, 0.459, 0.996, 1)
+    #background_normal: ''
+
 <Taskbar>:
     size_hint_y: None
+    pos_hint: {"y":0.07}
     orientation: 'horizontal'
-    Button:
+    TaskbarButton:
         text: 'Home'
-        font_size: 18
         on_release: root.btn_home()
-    Button:
+    TaskbarButton:
         text: 'Report'
-        font_size: 18
         on_release: root.btn_report()
-    Button:
+    TaskbarButton:
         text: 'AC Control'
-        font_size: 18
         on_release: root.btn_ac()
-    Button:
+    TaskbarButton:
         text: 'Email'
-        font_size: 18
         on_release: root.btn_email()
-    Button:
+    TaskbarButton:
         text: 'Settings'
-        font_size: 18
         on_release: root.btn_settings()
-    Button:
+    TaskbarButton:
         text: 'Log'
-        font_size: 18
         on_release: root.btn_log()
-<Status>:
+
+<Home>:
     FloatLayout:
-        DateTime:
-            size_hint: 1, 0.2
+        StatusBar:
+            size_hint: 1, 0.15
             pos_hint: {"top": 1}
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
 
 <ACControl>:
     FloatLayout:
+        StatusBar:
+            size_hint: 1, 0.15
+            pos_hint: {"top": 1}
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
+
 <Email>:
     FloatLayout:
+        StatusBar:
+            size_hint: 1, 0.15
+            pos_hint: {"top": 1}
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
+
 <Setting>:
     FloatLayout:
+        StatusBar:
+            size_hint: 1, 0.15
+            pos_hint: {"top": 1}
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
+
 <Report>:
     FloatLayout:
+        StatusBar:
+            size_hint: 1, 0.15
+            pos_hint: {"top": 1}
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
+
 <Log>:
     FloatLayout:
+        StatusBar:
+            size_hint: 1, 0.15
+            pos_hint: {"top": 1}
         Taskbar:
             size: root.width, root.height/5
+        UnderInfo:
 
             
