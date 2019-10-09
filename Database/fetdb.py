@@ -1,7 +1,7 @@
 import sqlite3 
 def fetch(paraname, dbname, tbname):
-#fetching colums data from database
-# connect with the myTable database 
+    """fetching colums data from database
+    connect with the myTable database """
     connection = sqlite3.connect(dbname) 
 # cursor object 
     crsr = connection.cursor() 
@@ -16,4 +16,4 @@ def fetch(paraname, dbname, tbname):
     return x    
 #testing
 if __name__ == '__main__':
-    print(fetch('time','my.db','therm'))
+    print(fetch('time','vgu.db','therm'))

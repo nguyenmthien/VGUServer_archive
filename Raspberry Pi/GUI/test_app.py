@@ -25,7 +25,7 @@ class DateTime(BoxLayout):
     now_date = Time()
     now_time.text = time.strftime('%H %M %S')
     now_date.text = time.strftime('%d %B %Y')
-    #Clock.schedule_interval(now_time.update,1)
+    Clock.schedule_interval(now_time.update,1)
 
 class Taskbar(BoxLayout):
     def btn_home(self):

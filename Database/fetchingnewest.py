@@ -11,5 +11,6 @@ def fetchnewest(dbname, tbname):
 
 if __name__ == '__main__':
     t = time.time()
-    print(fetchnewest('vgu.db','therm'))
+    output = fetchnewest('vgu.db','therm')
+    print(output[2])
     print(f"Time ellapsed: {time.time()-t} s")
