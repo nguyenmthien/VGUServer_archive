@@ -4,6 +4,10 @@
 const char* ssid     = "Tran gia phuc";
 const char* password = "phm123456";
 
+IPAddress ip( 192, 168, 0, 128 );
+IPAddress gateway( 192, 168, 0, 1 );
+IPAddress subnet( 255, 255, 255, 0 );
+
 const int16_t I2C_MASTER = 0x02;
 const int16_t I2C_SLAVE = 0x40;
 
@@ -51,7 +55,12 @@ void setupi2c()
 
 void setupWiFi()
 {
+    WiFi.forceSleepWake();
+    delay(1);
+    WiFi.persistent(false);
     WiFi.mode(WIFI_STA);
+    WiFi.config( ip, gateway, subnet );
+
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) 
     {
