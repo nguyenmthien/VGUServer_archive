@@ -1,10 +1,10 @@
 #include <ESP8266WiFi.h>
 #include <Wire.h>
 
-const char* ssid     = "Tran gia phuc";
-const char* password = "phm123456";
+const char* ssid     = "nguyenmthien";
+const char* password = "299792458";
 
-IPAddress ip( 192, 168, 0, 128 );
+IPAddress ip( 192, 168, 137, 128 );
 IPAddress gateway( 192, 168, 0, 1 );
 IPAddress subnet( 255, 255, 255, 0 );
 
@@ -37,7 +37,7 @@ void loop()
         float temp = readi2c(0xF3);
         float humid = readi2c(0xF5);
         String message = "";
-        message = String(temp, 4) + " " + String(humid, 2);
+        message = String(temp, 1) + " " + String(humid, 2);
         client.print(message);
     }
 }
@@ -64,10 +64,10 @@ void setupWiFi()
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) 
     {
-    delay(500);
+    delay(10);
     }
 
-    delay(5000);
+    delay(1000);
     
     client.connect(host, port);
 
@@ -80,7 +80,7 @@ float readi2c(int mode)
   //Send humidity measurement command
   Wire.write(mode);
   Wire.endTransmission();
-  delay(500);
+  delay(10);
  
   // Request 2 bytes of data
   Wire.requestFrom(I2C_SLAVE, 2);
