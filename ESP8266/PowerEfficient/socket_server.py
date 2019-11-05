@@ -1,17 +1,22 @@
 #!/usr/bin/env python3
 # *_* coding: utf-8 *_*
 
-"""An attemp to make an OOP version of example.py"""
+"""TCP Server library"""
 
 import socket
 import select
 import time
-class custom_error(Exception):
-    """Custom TCP Error"""
+class new_connection(Exception):
+    """TCP: New connection detected"""
     pass
 
+class address_does_not_exist(Exception):
+    """TCP: Address does exist in dictionary"""
+    def __init__(self, *args):
+        super().__init__(*args)
+
 def receive_message(client_socket):
-    """Does this function needed?, if yes, please put a docstring in here"""
+    """Recive message from client_socket"""
     try:
         mess = client_socket.recv(1024)
         if (not len(mess)):
@@ -41,6 +46,7 @@ class tcp_server:
         self.read_sockets = []
         self.write_sockets = []
         self.exception_sockets = []
+        self.ip_dictionary = []
         
 
     def update_sockets_list(self):
@@ -51,15 +57,28 @@ class tcp_server:
         """Handle new connection after updating socket lists"""    
         for notified_socket in self.read_sockets:
             if notified_socket == self.server_socket:
-                raise custom_error('New Connection')
+                raise new_connection('New Connection')
 
-    def new_socket_handle(self, id):
+    def new_socket_handler(self):
+        """New socket handler"""
         client_socket, client_address = self.server_socket.accept()
         client_socket.setblocking(0)
         self.sockets_list.append(client_socket)
+        logic = True
+        for address in self.ip_dictionary:
+            if address == client_address:
+                logic = False
+                return
+
+        if logic:
+            raise address_does_not_exist(client_socket, client_address)
+
+    def create_new_socket(self, client_socket, client_address, id):
+        """Create new TCP socket"""
         #self.clients[client_socket] = tcp_server.count
         #tcp_server.count += 1
         self.id_dict[client_socket] = id
+        self.ip_dictionary.append(client_address)
         #print(self.sockets_list)
 
         '''for notified_socket in self.exception_sockets:
@@ -78,7 +97,7 @@ class tcp_server:
             return mess_list[0], mess_list[1]
 
     def recv_all(self):
-        """Receive all messages from clients"""
+        """Receive all messages from clients and parse as therm"""
         self.update_sockets_list()
         return_list = []
         for notified_socket in self.read_sockets:

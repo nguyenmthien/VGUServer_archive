@@ -2,7 +2,7 @@ import socket_server
 import time
 import database
 
-vguserver = socket_server.tcp_server("192.168.1.15", 2033)
+vguserver = socket_server.tcp_server("127.0.0.1", 2033)
 last_t = time.time()
 database.createdb("thermo", "vgu.db")
 
@@ -10,9 +10,14 @@ while True:
     vguserver.update_sockets_list()
     try:
         vguserver.check_read_sockets()
-    except socket_server.custom_error:
-        id = input("Enter ID: ")
-        vguserver.new_socket_handle(id)    
+    except socket_server.new_connection:
+        try:
+            vguserver.new_socket_handler()
+        except socket_server.address_does_not_exist as arg:
+            id = input("Enter ID: ")
+            vguserver.create_new_socket(arg.args[0], arg.args[1], id)
+
+
     message_list = vguserver.recv_all()
     t = time.time()
     if message_list != []:
