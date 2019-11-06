@@ -25,9 +25,9 @@ while True:
         for dictionary in message_list:
             database.writetherm("vgu.db", dictionary['ID'], dictionary['Temp'], dictionary['Humid'])
     #vguserver.send_all("abc")
-    if (t - last_t) > 30:
-        vguserver.send_all("ab")
-        last_t = t
+    # if (t - last_t) > 30:
+    #     vguserver.send_all("ab")
+    #     last_t = t
 
 
 

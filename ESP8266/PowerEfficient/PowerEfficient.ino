@@ -1,6 +1,8 @@
 #include <ESP8266WiFi.h>
 #include <Wire.h>
 
+const long long int sleep_time = 10e6;
+
 const char* ssid     = "nguyenmthien";
 const char* password = "299792458";
 
@@ -23,23 +25,18 @@ void sendWiFi(int msg);
 void setup()
 {
     setupi2c();
-    setupWiFi();
+    initWiFi();
 }
 
 void loop()
 {
-    if (client.available())
-    {
-        while (client.available())
-        {
-            client.read();
-        }
-        float temp = readi2c(0xF3);
-        float humid = readi2c(0xF5);
-        String message = "";
-        message = String(temp, 1) + " " + String(humid, 2);
-        client.print(message);
-    }
+    setupWiFi();
+    float temp = readi2c(0xF3);
+    float humid = readi2c(0xF5);
+    String message = "";
+    message = String(temp, 1) + " " + String(humid, 2);
+    client.print(message);
+    ESP.deepSleep(sleep_time);
 }
 
 void setupi2c()
@@ -48,26 +45,28 @@ void setupi2c()
     Wire.begin();
     Wire.beginTransmission(I2C_SLAVE);
     Wire.endTransmission();
-    delay(300);
+    delay(3);
 }
 
-
+void initWiFi()
+{
+    WiFi.persistent(false);
+    WiFi.mode(WIFI_STA);
+    WiFi.config( ip, gateway, subnet );
+}
 
 void setupWiFi()
 {
     WiFi.forceSleepWake();
     delay(1);
-    WiFi.persistent(false);
-    WiFi.mode(WIFI_STA);
-    WiFi.config( ip, gateway, subnet );
 
     WiFi.begin(ssid, password);
     while (WiFi.status() != WL_CONNECTED) 
     {
-    delay(10);
+    delay(1);
     }
 
-    delay(1000);
+    delay(10);
     
     client.connect(host, port);
 
@@ -91,7 +90,7 @@ float readi2c(int mode)
     data[1] = Wire.read();
   }
   
-  // Convert the data for humidity
+  // Convert the data for humidity mode
   if (mode == 0xF5)
   {
       float humidity  = ((data[0] * 256.0) + data[1]);
@@ -99,7 +98,8 @@ float readi2c(int mode)
       return humidity;  
   }
   
-  if (mode==0xF3)
+  // Convert the data for temperature mode
+  if (mode == 0xF3)
   {
       float temp  = ((data[0] * 256.0) + data[1]);
       float celsTemp = ((175.72 * temp) / 65536.0) - 46.85;
