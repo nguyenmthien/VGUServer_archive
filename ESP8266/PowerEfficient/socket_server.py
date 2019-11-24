@@ -17,6 +17,7 @@ class address_does_not_exist(Exception):
     def __init__(self, *args):
         super().__init__(*args)
 
+
 def receive_message(client_socket):
     """Recive message from client_socket"""
     try:

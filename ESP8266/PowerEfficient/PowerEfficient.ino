@@ -1,9 +1,12 @@
 #include <ESP8266WiFi.h>
+#include <Wire.h>
 
 #ifndef STASSID
 #define STASSID "nguyenmthien"
 #define STAPSK  "299792458"
 #define SLEEPTIME 10e6 //in microseconds
+#define I2C_MASTER 0x02
+#define I2C_SLAVE 0x40
 #endif
 
 const char* ssid     = STASSID;
@@ -95,10 +98,18 @@ void loop() {
     Serial.println("connection failed"); delay(1000); return;
   }
 
+  // Get data from sensor
+  Serial.println("getting data from sensor");
+  setupi2c();
+  float temp = readi2c(0xF3), humid = readi2c(0xF5);
+  String message = "";
+  message = String(temp, 1) + " " + String(humid, 0);
+
+
   // This will send a string to the server
   Serial.println("sending data to server");
   if (client.connected()) { 
-    client.println("Guten Tag!");
+    client.println(message);
   }
 
 
