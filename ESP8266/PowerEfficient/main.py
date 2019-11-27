@@ -2,11 +2,7 @@ import socket_server
 import time
 import database
 
-<<<<<<< HEAD
 vguserver = socket_server.tcp_server(socket_server.get_ip(), 2033)
-=======
-vguserver = socket_server.tcp_server("192.168.100.12", 2033)
->>>>>>> b0fde00b6222840d0e9458e542ecfe77dbf0b56a
 last_t = time.time()
 database.createdb("thermo", "vgu.db")
 

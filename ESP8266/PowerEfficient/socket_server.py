@@ -17,7 +17,6 @@ class address_does_not_exist(Exception):
     def __init__(self, *args):
         super().__init__(*args)
 
-<<<<<<< HEAD
 def get_ip():
     """Find local IP of the current network interface, avoid 127.0.0.1"""
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -30,8 +29,7 @@ def get_ip():
     finally:
         s.close()
     return IP
-=======
->>>>>>> b0fde00b6222840d0e9458e542ecfe77dbf0b56a
+
 
 def receive_message(client_socket):
     """Recive message from client_socket"""
