@@ -26,7 +26,7 @@ def main():
     if message_list != []:
         print(message_list)
         for dictionary in message_list:
-            database.writetherm("vgu.db", dictionary['ID'], dictionary['Temp'], dictionary['Humid'])
+            database.write_therm("vgu.db", dictionary['ID'], dictionary['Temp'], dictionary['Humid'])
 
 if __name__ == '__main__':
     while True:
