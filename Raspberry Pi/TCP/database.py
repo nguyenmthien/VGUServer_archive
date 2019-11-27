@@ -33,7 +33,7 @@ def createdb(mode, name):
         connection.close()
 
 
-def writetherm(db_name, sensor_name, temp, humid):
+def write_therm(db_name, sensor_name, temp, humid):
     """Write the temperature and humidity to db"""
     connection = sqlite3.connect(db_name) 
     crsr = connection.cursor() 
@@ -43,7 +43,7 @@ def writetherm(db_name, sensor_name, temp, humid):
     connection.commit()
     connection.close()
 
-def writeuser(db_name, username, password):
+def write_user(db_name, username, password):
     """Write the username and password to db"""
     connection = sqlite3.connect(db_name) 
     crsr = connection.cursor() 
@@ -53,9 +53,20 @@ def writeuser(db_name, username, password):
     connection.commit()
     connection.close()
 
+def get_therm(n, db_name):
+    """Get n lastest line from table therm in db_name"""
+    connection = sqlite3.connect(db_name)
+    crsr = connection.cursor()
+    crsr.execute("SELECT * FROM therm ORDER BY time DESC")
+    return_list = crsr.fetchmany(n)
+    connection.close()
+    return return_list
+    
+
+
 if __name__ == "__main__": 
     #createdb("thermo","my.db")
     #writetherm("my.db",1,23.3,12.3)
     createdb("user","username.db")
-    writeuser("username.db","abc","xyz")
+    write_user("username.db","abc","xyz")
 
