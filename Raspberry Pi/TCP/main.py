@@ -1,46 +1,34 @@
-import socket_server
+import socket_server 
 import time
 import database
 
-vguserver = socket_server.tcp_server("192.168.1.15", 2033)
+vguserver = socket_server.tcp_server("192.168.100.12", 2033)
 last_t = time.time()
 database.createdb("thermo", "vgu.db")
 
-while True:
+def main():
     vguserver.update_sockets_list()
     try:
         vguserver.check_read_sockets()
-    except socket_server.custom_error:
-        id = input("Enter ID: ")
-        vguserver.new_socket_handle(id)    
+    except socket_server.new_connection as msg:
+        print(msg, end='')
+        try:
+            vguserver.new_socket_handler()
+        except socket_server.address_does_not_exist as arg:
+            id = input("Enter ID: ")
+            vguserver.create_new_socket(arg.args[0], arg.args[1], id)
+            print(f"Created socket with ID {id}, address {arg.args[1][0]}")
+            return
+        return
+
     message_list = vguserver.recv_all()
-    t = time.time()
+    
     if message_list != []:
         print(message_list)
         for dictionary in message_list:
             database.writetherm("vgu.db", dictionary['ID'], dictionary['Temp'], dictionary['Humid'])
-    #vguserver.send_all("abc")
-    if (t - last_t) > 30:
-        vguserver.send_all("ab")
-        last_t = t
 
-
-
-
-
-
-
-
-    '''test.create_sockets()
-    client_num = int(input("Enter the client number: "))
-    test.create_sockets()
-    try:
-        test.sendmsg("haha", client_num)
-        time.sleep(1)
-        test.recvmsg(client_num)
-
-        s= time.time()
-
-    except:
-        print("The client does not exist!")
-        socket_server.tcp_server()'''
+if __name__ == '__main__':
+    while True:
+        main()
+    
