@@ -12,11 +12,11 @@
 const char* ssid     = STASSID;
 const char* password = STAPSK;
 
-IPAddress ip( 192, 168, 100, 128 );
-IPAddress gateway( 192, 168, 100, 1 );
+IPAddress ip( 192, 168, 0, 128 );
+IPAddress gateway( 192, 168, 0, 1 );
 IPAddress subnet( 255, 255, 255, 0 );
 
-const char* host = "192.168.100.8";
+const char* host = "192.168.0.102";
 const uint16_t port = 2033;
 
 void setupi2c() {
@@ -33,7 +33,7 @@ float readi2c (int mode) {
   //Send humidity measurement command
   Wire.write(mode);
   Wire.endTransmission();
-  delay(10);
+  delay(50);
  
   // Request 2 bytes of data
   Wire.requestFrom(I2C_SLAVE, 2);
@@ -101,9 +101,10 @@ void loop() {
   // Get data from sensor
   Serial.println("getting data from sensor");
   setupi2c();
-  float temp = readi2c(0xF3), humid = readi2c(0xF5);
+  float temp = readi2c(0xF3);
+  float humid = readi2c(0xF5);
   String message = "";
-  message = String(temp, 1) + " " + String(humid, 0);
+  message = String(temp, 1) + " " + String(humid);
 
 
   // This will send a string to the server

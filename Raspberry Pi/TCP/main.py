@@ -3,6 +3,7 @@ import time
 import database
 
 vguserver = socket_server.tcp_server(socket_server.get_ip(), 2033)
+print(f"Started TCP server at {socket_server.get_ip()}:2033")
 last_t = time.time()
 database.createdb("thermo", "vgu.db")
 
