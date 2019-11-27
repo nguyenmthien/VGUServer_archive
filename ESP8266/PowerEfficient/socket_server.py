@@ -17,6 +17,7 @@ class address_does_not_exist(Exception):
     def __init__(self, *args):
         super().__init__(*args)
 
+<<<<<<< HEAD
 def get_ip():
     """Find local IP of the current network interface, avoid 127.0.0.1"""
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -29,6 +30,8 @@ def get_ip():
     finally:
         s.close()
     return IP
+=======
+>>>>>>> b0fde00b6222840d0e9458e542ecfe77dbf0b56a
 
 def receive_message(client_socket):
     """Recive message from client_socket"""
@@ -45,13 +48,10 @@ def receive_message(client_socket):
 
 class tcp_server:
     """Create a TCP/IP Server"""
-    count = 1
-    #HEADER_LENGTH = 10
     def __init__(self,IP,PORT):
         self.IP = IP
         self.PORT = PORT
         self.server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        #self.server_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         self.server_socket.setblocking(0)
         self.server_socket.bind((self.IP, self.PORT))
         self.server_socket.listen(5)
@@ -79,7 +79,6 @@ class tcp_server:
         """New socket handler"""
         client_socket, client_address = self.server_socket.accept()
         client_mac = getmac.get_mac_address(ip = client_address[0], network_request=True)
-        print(f" from client with IP {client_address[0]}, MAC {client_mac}")
         client_socket.setblocking(0)
         self.sockets_list.append(client_socket)
         logic = True
@@ -99,16 +98,10 @@ class tcp_server:
 
     def create_new_socket(self, client_socket, client_address, id):
         """Create new TCP socket"""
-        #self.clients[client_socket] = tcp_server.count
-        #tcp_server.count += 1
         client_mac = getmac.get_mac_address(ip = client_address[0], network_request=True)
         self.id_dict[client_mac] = id
         self.mac_list.append(client_mac)
         self.socket_list_by_mac[client_mac] = client_socket
-
-        '''for notified_socket in self.exception_sockets:
-            self.sockets_list.remove(notified_socket)
-            del self.clients[notified_socket]'''
     
     def send_all(self, mess):
         """THIS FUNCTION IS WRONG"""
@@ -117,7 +110,7 @@ class tcp_server:
                 key.send(mess.encode('utf-8'))
 
     def therm_parsing(self, mess):
-        """Split a message from a client into 2 variables"""
+        """Split a message from a client into 2 variables by spaces"""
         mess_list = mess.split()
         if len(mess_list) == 2:
             return mess_list[0], mess_list[1]
@@ -127,11 +120,8 @@ class tcp_server:
         self.update_sockets_list()
         return_list = []
         for notified_socket in self.read_sockets:
-            print("Someone is doing something...")
             if notified_socket != self.server_socket:
-                print("Incoming message")
                 client_mac = getmac.get_mac_address(ip = notified_socket.getpeername()[0])
-                print(client_mac)
                 if self.id_dict[client_mac] != 'UPS':
                     mess_dict = {'ID':self.id_dict[client_mac]}
                     message = receive_message(notified_socket)
