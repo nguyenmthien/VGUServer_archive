@@ -1,5 +1,5 @@
 #include <ESP8266WiFi.h>
-#include "i2c.c"
+#include "i2c.h"
 
 #ifndef STASSID
 #define STASSID "nguyenmthien"
