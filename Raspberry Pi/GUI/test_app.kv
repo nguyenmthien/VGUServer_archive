@@ -1,9 +1,10 @@
 #:kivy 1.11.1
+#:include email.kv
 
 <DefaultLabel@Label>:
-    font_size: 20
-    color: (0.365, 0.678, 0.925, 1)
-
+    font_size: '24sp'
+    #color: (0.365, 0.678, 0.925, 1)
+    color: (0.122, 0.459, 0.996, 1)
 <DateTime>:
     BoxLayout:    
         orientation: 'horizontal'
@@ -11,6 +12,17 @@
             text: self.now_time.text
         DateInfo:
             text: self.now_date.text
+
+<LockButton@Button>:
+    text: 'X'
+    bold: True
+    font_size: '28sp'
+    color: (0,0,0,1)
+    background_color: (1,0,0,1)
+    background_normal: ''
+    on_release: 
+        app.root.current = 'login'
+        app.root.transition.direction = 'right'
 
 <StatusBar>:
     orientation: 'horizontal'
@@ -21,31 +33,20 @@
         bold: True
     DateInfo:
         text: self.now_date.text
-    Button:
+    LockButton:
+        size_hint_x: 0.2    
         #size: (200,15)
-        size_hint_x: 0.38
-        text: 'X'
-        bold: True
-        font_size: 28
-        color: (0,0,0,1)
-        background_color: (1,0,0,1)
-        background_normal: ''
-        on_release: 
-            app.root.current = 'login'
-            app.root.transition.direction = 'right'
-
 <LoginPage>:
     FloatLayout:
         DateTime:
             size_hint: 1, 0.18
             pos_hint: {"top": 1}
-        Label:
+        DefaultLabel:
             size_hint: 1, 0.2
             pos_hint: {"top": 0.85}
             text: 'VGU Server IoT Kit'
             bold: True
-            font_size: 32 
-            color: (0.365, 0.678, 0.925, 1)
+            font_size: '32sp' 
         FloatLayout:
             Label:
                 size_hint: 0.5, 0.1
@@ -60,7 +61,7 @@
                 halign: 'center'
                 size_hint: 0.5, 0.1
                 pos_hint: {"center_x":0.5,"top":0.6}
-                font_size: 18
+                font_size: '18sp'
                 focus: True
                 multiline: False
                 write_tab: False
@@ -73,7 +74,7 @@
                 size_hint: 0.5, 0.1
                 pos_hint: {"center_x":0.5,"top":0.45}
                 multiline: False
-                font_size: 18
+                font_size: '18sp'
                 password: True
                 write_tab: False
                 on_text_validate: root.check_login()
@@ -82,12 +83,12 @@
                 text: 'Log In'
                 size_hint: 0.5, 0.15
                 pos_hint: {"center_x":0.5,"top":0.2}
-                font_size: 18 
+                font_size: '18sp' 
                 on_release: root.check_login()
             Label:
 
 <TaskbarButton@Button>:
-    font_size: 18
+    font_size: 20
     background_color: (1, .404, 0, 1)
     background_normal: ''
     #background_down: ''
@@ -102,17 +103,17 @@
             pos: self.pos
 
 <UnderInfo@Label+BackgroundColor>:
-    size_hint: 1, 0.07
+    size_hint: 1, 0.05
     pos_hint: {"center_x": 0.5, "y":0}
     text: "Nguyen Minh Thien - Dang Van Phuoc - Le Huu Tuan Huy - Tran Gia Phuc - EEIT 2017"
-    font_size: 17
+    font_size: '17sp'
     #color: (0.365, 0.678, 0.925, 1)
     background_color: (0.122, 0.459, 0.996, 1)
     #background_normal: ''
 
 <Taskbar>:
     size_hint_y: None
-    pos_hint: {"y":0.07}
+    pos_hint: {"y":0.05}
     orientation: 'horizontal'
     TaskbarButton:
         text: 'Home'
@@ -136,55 +137,50 @@
 <Home>:
     FloatLayout:
         StatusBar:
-            size_hint: 1, 0.15
+            size_hint: 1, 0.12
             pos_hint: {"top": 1}
         Taskbar:
-            size: root.width, root.height/5
+            size: root.width, root.height/6
         UnderInfo:
 
 <ACControl>:
     FloatLayout:
         StatusBar:
-            size_hint: 1, 0.15
+            size_hint: 1, 0.12
             pos_hint: {"top": 1}
         Taskbar:
-            size: root.width, root.height/5
+            size: root.width, root.height/6
         UnderInfo:
-
-<Email>:
-    FloatLayout:
-        StatusBar:
-            size_hint: 1, 0.15
-            pos_hint: {"top": 1}
-        Taskbar:
-            size: root.width, root.height/5
-        UnderInfo:
+<BoldLabel@Label>:
+    font_size: '22sp'
+    bold: True
+    color: (0.365, 0.678, 0.925, 1)
 
 <Setting>:
     FloatLayout:
         StatusBar:
-            size_hint: 1, 0.15
+            size_hint: 1, 0.12
             pos_hint: {"top": 1}
         Taskbar:
-            size: root.width, root.height/5
+            size: root.width, root.height/6
         UnderInfo:
 
 <Report>:
     FloatLayout:
         StatusBar:
-            size_hint: 1, 0.15
+            size_hint: 1, 0.12
             pos_hint: {"top": 1}
         Taskbar:
-            size: root.width, root.height/5
+            size: root.width, root.height/6
         UnderInfo:
 
 <Log>:
     FloatLayout:
         StatusBar:
-            size_hint: 1, 0.15
+            size_hint: 1, 0.12
             pos_hint: {"top": 1}
         Taskbar:
-            size: root.width, root.height/5
+            size: root.width, root.height/6
         UnderInfo:
 
             
