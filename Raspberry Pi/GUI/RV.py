@@ -66,6 +66,22 @@ class Email(Screen):
         self.error_msg.text = ""
         self.rv.layout_manager.clear_selection()
     
+    def to_csv_email(self, list, file_csv):
+        fieldnames = ['Email']
+        writer = csv.DictWriter(file_csv, fieldnames=fieldnames)
+        writer.writeheader()
+        for k in list:
+            writer.writerow({'Email': k})
+
+    def to_csv_data(self, file_csv, num):
+        fieldnames = ['Time', 'ID', 'Temperature', 'Humidity']
+        writer = csv.DictWriter(file_csv, fieldnames=fieldnames)
+        writer.writeheader()
+        data_list = database.get_therm(num, 'vgu.db')
+        for k in data_list:
+            writer.writerow({'Time':k[0], 'ID':k[1],
+            'Temperature':k[2], 'Humidity':k[3]})
+
     def send(self, mode, number):
         self.error_msg.text = ""
         select_list = []
@@ -76,20 +92,9 @@ class Email(Screen):
         if number.isdigit():
             with open('result.csv', mode='w', newline='') as csv_file:
                 if mode == 'Email':
-                    fieldnames = ['Email']
-                    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-                    writer.writeheader()
-                    for k in select_list:
-                        writer.writerow({'Email': k})
+                    self.to_csv_email(select_list, csv_file)
                 else:
-                    fieldnames = ['Time', 'ID', 'Temperature', 'Humidity']
-                    writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
-                    writer.writeheader()
-                    data_list = database.get_therm(int(number), 'vgu.db')
-                    for k in data_list:
-                        writer.writerow({'Time':k[0],
-                        'ID':k[1],'Temperature':k[2],
-                        'Humidity':k[3]})
+                    self.to_csv_data(csv_file, int(number))
             if len(select_list):
                 email2.send_email_list(select_list, 'result.csv')
                 print(select_list)
