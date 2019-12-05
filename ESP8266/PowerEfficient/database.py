@@ -7,6 +7,7 @@ writetherm: write the temperature and humidity into the database."""
 
 
 import sqlite3
+import hashlib
 import time
 
 def createdb(mode, name):
@@ -53,9 +54,21 @@ def writeuser(db_name, username, password):
     connection.commit()
     connection.close()
 
+def hash(string):
+    """Return the SHA3-512 hash of string"""
+    return hashlib.sha3_512(string.encode('utf-8')).hexdigest
+
+def create_user(name, hased_password, db_name):
+    pass
+
+def match_user(user, hashed_password, db_name):
+    pass
+
+def remove_user(user, db_name):
+    pass
+
 if __name__ == "__main__": 
     #createdb("thermo","my.db")
     #writetherm("my.db",1,23.3,12.3)
     createdb("user","username.db")
     writeuser("username.db","abc","xyz")
-
