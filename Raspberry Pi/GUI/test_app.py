@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+# *_* coding: utf-8 *_*
+
 import kivy
 from kivy.app import App
 #from kivy.config import Config
@@ -5,12 +8,14 @@ from kivy.uix.widget import Widget
 from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTransition
 from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 #Clock.max_iteration = 20
 from kivy.lang import Builder
 from kivy.properties import *
+from RV import Email
 import time
 
 Builder.load_file('test_app.kv')
@@ -24,13 +29,17 @@ class Time(DefaultLabel):
     def update(self, *args):
         self.text = time.strftime('%H:%M:%S')
 
+class Date(DefaultLabel):
+    def update(self, *args):
+        self.text = time.strftime('%d %B %Y')
+
 class TimeInfo(DefaultLabel):
     now_time = Time()
     now_time.text = time.strftime('%H:%M:%S')
     Clock.schedule_interval(now_time.update,1)
 
 class DateInfo(DefaultLabel):
-    now_date = Time()
+    now_date = Date()
     now_date.text = time.strftime('%d %B %Y')
     Clock.schedule_interval(now_date.update,1)
 
@@ -77,9 +86,6 @@ class Home(Screen):
     pass
 
 class ACControl(Screen):
-    pass
-
-class Email(Screen):
     pass
 
 class Setting(Screen):
