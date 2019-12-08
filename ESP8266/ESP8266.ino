@@ -4,17 +4,17 @@
 #ifndef STASSID
 #define STASSID "nguyenmthien"
 #define STAPSK  "299792458"
-#define SLEEPTIME 10e6 //in microseconds
+#define SLEEPTIME 120e6 //in microseconds
 #endif
 
 const char* ssid     = STASSID;
 const char* password = STAPSK;
 
-IPAddress ip( 192, 168, 0, 128 );
-IPAddress gateway( 192, 168, 0, 1 );
+IPAddress ip( 192, 168, 137, 128 );
+IPAddress gateway( 192, 168, 137, 1 );
 IPAddress subnet( 255, 255, 255, 0 );
 
-const char* host = "192.168.0.102";
+const char* host = "192.168.137.1";
 const uint16_t port = 2033;
 
 
