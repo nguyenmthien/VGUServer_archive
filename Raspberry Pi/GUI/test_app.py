@@ -10,15 +10,17 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTransition
-from kivy.properties import ObjectProperty
 from kivy.clock import Clock
 #Clock.max_iteration = 20
 from kivy.lang import Builder
+from kivy.logger import LoggerHistory
 from kivy.properties import *
 from RV import Email
-import time
+import time  
 
-Builder.load_file('test_app.kv')
+with open('test_app.kv', encoding='utf8') as f: 
+    Builder.load_string(f.read()) 
+#Builder.load_file('test_app.kv')
 kivy.require("1.11.1")
 Window.clearcolor = (.827, .827, .827, 1)
 
@@ -46,7 +48,8 @@ class DateInfo(DefaultLabel):
 class DateTime(BoxLayout):
     pass
 class StatusBar(BoxLayout):
-    pass
+    def doscreenshot(self,*largs):
+       Window.screenshot(name='screenshot.png')
 
 class Taskbar(BoxLayout):
     def btn_home(self):
@@ -104,6 +107,8 @@ for screen in screens:
 screen_manager.current = "login"
 
 class ServerApp(App):
+    def doscreenshot(self,*largs):
+       Window.screenshot(name='screenshot%(counter)04d.jpg')
     def build(self):
         return screen_manager
 

@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 #:kivy 1.11.1
 #:include email.kv
-
 <DefaultLabel@Label>:
     font_size: '24sp'
     #color: (0.365, 0.678, 0.925, 1)
@@ -14,15 +14,17 @@
             text: self.now_date.text
 
 <LockButton@Button>:
-    text: 'X'
+    #id: screenshot
+    #text: 'X'
     bold: True
     font_size: '28sp'
     color: (0,0,0,1)
-    background_color: (1,0,0,1)
-    background_normal: ''
-    on_release: 
-        app.root.current = 'login'
-        app.root.transition.direction = 'right'
+    #background_color: (1,0,0,1)
+    background_normal: "logout.png"
+    background_down: "logout.png"
+    #on_release: 
+        #app.root.current = 'login'
+        #app.root.transition.direction = 'right'
 
 <StatusBar>:
     orientation: 'horizontal'
@@ -34,7 +36,9 @@
     DateInfo:
         text: self.now_date.text
     LockButton:
-        size_hint_x: 0.2    
+        id: screenshot
+        size_hint_x: 0.30
+        on_release: root.doscreenshot()  
         #size: (200,15)
 <LoginPage>:
     FloatLayout:
@@ -133,12 +137,33 @@
     TaskbarButton:
         text: 'Log'
         on_release: root.btn_log()
-
+<FFLabel@Label>:
+    font_size: "50sp"
 <Home>:
     FloatLayout:
         StatusBar:
             size_hint: 1, 0.12
             pos_hint: {"top": 1}
+        GridLayout:
+            size_hint: 1, 0.3
+            pos_hint: {"top": .8}
+            cols: 2
+            Label:
+                text: "Temperature"
+                font_size: "40sp"
+            Label:
+                text: "Humidity"
+                font_size: "40sp"
+        GridLayout:
+            size_hint: 1, 0.3
+            pos_hint: {"top": .7}
+            cols: 2
+            FFLabel:
+                text: "32°C"
+                color: (0.122, 0.459, 0.996, 1)
+            FFLabel:
+                text: "47% RH"
+                color: (0.122, 0.459, 0.996, 1)
         Taskbar:
             size: root.width, root.height/6
         UnderInfo:
@@ -177,7 +202,7 @@
 <Log>:
     FloatLayout:
         StatusBar:
-            size_hint: 1, 0.12
+            size_hint: 1, 0.1
             pos_hint: {"top": 1}
         Taskbar:
             size: root.width, root.height/6
