@@ -11,17 +11,21 @@ from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.screenmanager import ScreenManager, Screen, NoTransition, SlideTransition
 from kivy.clock import Clock
+from kivy.uix.codeinput import CodeInput
 #Clock.max_iteration = 20
 from kivy.lang import Builder
-from kivy.logger import LoggerHistory
+from kivy.logger import LoggerHistory, Logger
 from kivy.properties import *
 from RV import Email
-import time  
+import time
+import os
+import glob
 
+kivy.require("1.11.1")
 with open('test_app.kv', encoding='utf8') as f: 
     Builder.load_string(f.read()) 
 #Builder.load_file('test_app.kv')
-kivy.require("1.11.1")
+
 Window.clearcolor = (.827, .827, .827, 1)
 
 class DefaultLabel(Label):
@@ -84,7 +88,6 @@ class LoginPage(Screen):
             info = self.ids.info
             info.text = '[color=#FF0000]Username and password not found[/color]'
 
-
 class Home(Screen):
     pass
 
@@ -97,8 +100,23 @@ class Setting(Screen):
 class Report(Screen):
     pass
 
+class log_str(CodeInput):
+    def update(self, *args):
+        s = ''
+        with open('log.txt', 'w') as f:
+            for i in LoggerHistory.history:
+                f.write(str(i) + '\n')
+        dir_open = os.path.join(kivy.kivy_home_dir, 'logs', '*')
+        Logger.info(dir_open)
+        lastest_file = max(glob.glob(dir_open), key=os.path.getctime)
+        with open(lastest_file,'r') as read_file:
+            s = ''.join(read_file.read())
+        self.text = s
+
 class Log(Screen):
-    pass
+    sts = log_str()
+    sts.text = 'Loading...'
+    Clock.schedule_interval(sts.update, 2)
 
 screen_manager = ScreenManager()
 screens = [LoginPage(name="login"),Home(name="home"),Report(name="report"),ACControl(name="ac"),Email(name="email"),Setting(name="setting"),Log(name="log")]

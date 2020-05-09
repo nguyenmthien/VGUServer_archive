@@ -6,7 +6,7 @@
     #color: (0.365, 0.678, 0.925, 1)
     color: (0.122, 0.459, 0.996, 1)
 <DateTime>:
-    BoxLayout:    
+    BoxLayout:
         orientation: 'horizontal'
         TimeInfo:
             text: self.now_time.text
@@ -16,13 +16,13 @@
 <LockButton@Button>:
     #id: screenshot
     #text: 'X'
-    bold: True
-    font_size: '28sp'
-    color: (0,0,0,1)
+    #bold: True
+    #font_size: '28sp'
+    #color: (0,0,0,1)
     #background_color: (1,0,0,1)
-    background_normal: "logout.png"
-    background_down: "logout.png"
-    #on_release: 
+    background_normal: "logout2.png"
+    #background_down: "logout2.png"
+    #on_release:
         #app.root.current = 'login'
         #app.root.transition.direction = 'right'
 
@@ -38,7 +38,7 @@
     LockButton:
         id: screenshot
         size_hint_x: 0.30
-        on_release: root.doscreenshot()  
+        on_release: root.doscreenshot()
         #size: (200,15)
 <LoginPage>:
     FloatLayout:
@@ -50,7 +50,7 @@
             pos_hint: {"top": 0.85}
             text: 'VGU Server IoT Kit'
             bold: True
-            font_size: '32sp' 
+            font_size: '32sp'
         FloatLayout:
             Label:
                 size_hint: 0.5, 0.1
@@ -87,7 +87,7 @@
                 text: 'Log In'
                 size_hint: 0.5, 0.15
                 pos_hint: {"center_x":0.5,"top":0.2}
-                font_size: '18sp' 
+                font_size: '18sp'
                 on_release: root.check_login()
             Label:
 
@@ -159,10 +159,10 @@
             pos_hint: {"top": .7}
             cols: 2
             FFLabel:
-                text: "32°C"
+                text: "23.9 °C"
                 color: (0.122, 0.459, 0.996, 1)
             FFLabel:
-                text: "47% RH"
+                text: "59% RH"
                 color: (0.122, 0.459, 0.996, 1)
         Taskbar:
             size: root.width, root.height/6
@@ -201,11 +201,21 @@
 
 <Log>:
     FloatLayout:
-        StatusBar:
-            size_hint: 1, 0.1
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 0.1
             pos_hint: {"top": 1}
+            DefaultLabel:
+                text: "Logger"
+                bold: True
+                font_size: '28sp'
+            LockButton:
+                size_hint_x: .08
+        CodeInput:
+            size_hint_y: 0.683
+            pos_hint: {"top": 0.9}
+            text: root.sts.text
+            readonly: True
         Taskbar:
             size: root.width, root.height/6
         UnderInfo:
-
-            

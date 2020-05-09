@@ -24,6 +24,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     def refresh_view_attrs(self, rv, index, data):
         ''' Catch and handle the view changes '''
         self.index = index
+        print(rv.data)
         return super(SelectableLabel, self).refresh_view_attrs(
             rv, index, data)
 
@@ -84,23 +85,27 @@ class Email(Screen):
 
     def send(self, mode, number):
         self.error_msg.text = ""
+        all_list = []
         select_list = []
         for x in reversed(self.rv.data):
+            all_list.append(x['text'])
             if x['select'] == True:
                 select_list.append(x['text'])
 
-        if number.isdigit():
-            with open('result.csv', mode='w', newline='') as csv_file:
-                if mode == 'Email':
-                    self.to_csv_email(select_list, csv_file)
-                else:
-                    self.to_csv_data(csv_file, int(number))
-            if len(select_list):
-                email2.send_email_list(select_list, 'result.csv')
-                print(select_list)
-            else:
-                self.error_msg.text = "Please select email to send"
+        if not len(select_list):
+            self.error_msg.text = "Please select email to send"
         else:
-            self.error_msg.text = "Invalid number"
+            if mode == 'Email':
+                with open('result.csv', mode='w', newline='') as csv_file:
+                    self.to_csv_email(all_list, csv_file)
+                email2.send_email_list(select_list, 'result.csv')
+            else:
+                if number.isdigit():
+                    with open('result.csv', mode='w', newline='') as csv_file:
+                        self.to_csv_data(csv_file, int(number))
+                    email2.send_email_list(select_list, 'result.csv')
+                    #print(select_list)
+                else:
+                    self.error_msg.text = "Invalid number"
 
         

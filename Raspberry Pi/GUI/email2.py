@@ -1,15 +1,17 @@
+import os
 import sys, ssl, email
-from smtplib import SMTP_SSL as SMTP       # this invokes the secure SMTP protocol (port 465, uses SSL)
-# from smtplib import SMTP                  # use this for standard SMTP protocol   (port 25, no encryption)
 
 from email import encoders
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from email.mime.base import MIMEBase
 
+from smtplib import SMTP_SSL as SMTP       # this invokes the secure SMTP protocol (port 465, uses SSL)
+from dotenv import load_dotenv
+load_dotenv()
 SMTP_Host = 'smtp.gmail.com'
-MY_ADDRESS = 'spam.team1.groupcd.ee4.vgu@gmail.com'
-PASSWORD = "H376r923l84b"
+MY_ADDRESS = os.getenv('ADDRESS')
+PASSWORD = os.getenv('P_W')
 
 def get_contacts(filename):
     emails = []
@@ -54,7 +56,10 @@ def send_email_list(emails, filename):
     #emails = list
     #filename = 'contacts.txt'
 
+    # Create a secure SSL context
     context = ssl.create_default_context()
+
+    # Establish a connection with Gmail’s SMTP server, then login with email address and password
     s = SMTP(host=SMTP_Host, port=465, context=context)
     s.login(MY_ADDRESS, PASSWORD)
 
@@ -64,11 +69,17 @@ def send_email_list(emails, filename):
     """
     subject = "Hi! This is your information for VGU Server"
 
+    #Open CSV file in binary mode
     with open(filename, "rb") as attachment:
+        # Add file as application/octet-stream
+        # Email client can usually download this automatically as attachment
         part = MIMEBase("application", "octet-stream")
         part.set_payload(attachment.read())
 
+    # Encode file in ASCII characters to send by email 
     encoders.encode_base64(part)
+
+    # Add header as key/value pair to attachment part
     part.add_header(
         "Content-Disposition",
         f"attachment; filename= {filename}",
@@ -76,11 +87,14 @@ def send_email_list(emails, filename):
 
     try:
         for a_email in emails:
+            # Create a multipart message and set headers
             msg = MIMEMultipart()
             msg['From'] = MY_ADDRESS
             msg['To'] = a_email
             msg['Subject'] = subject
+            # Add body to email
             msg.attach(MIMEText(content, text_subtype))
+            # Add attachment to message and convert message to string
             msg.attach(part)
             text = msg.as_string()
             s.sendmail(MY_ADDRESS, a_email, text)
