@@ -34,14 +34,14 @@
                 hint_text: "Enter Email"
                 font_size: '23sp'
                 multiline: False
-                on_text_validate: 
+                on_text_validate:
                     root.insert(email_input.text)
                     email_input.text = ""
             Button:
                 text: 'Add'
                 font_size: '23sp'
                 size_hint_x: .3
-                on_release: 
+                on_release:
                     root.insert(email_input.text)
                     email_input.text = ""
         RecycleView:
@@ -86,12 +86,12 @@
                 text: "Send"
                 font_size: '23sp'
                 size_hint_x: .15
-                on_release: root.send(email_spinner.text, data_number.text)    
+                on_release: root.send(email_spinner.text, data_number.text)
             Button:
                 text: "Delete"
                 font_size: '23sp'
                 size_hint_x: .15
-                on_release: root.delete()  
+                on_release: root.delete()
         Taskbar:
             size: root.width, root.height/6
-        UnderInfo: 
+        UnderInfo:

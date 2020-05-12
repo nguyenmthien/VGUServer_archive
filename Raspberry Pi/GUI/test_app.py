@@ -87,6 +87,7 @@ class LoginPage(Screen):
         else:
             info = self.ids.info
             info.text = '[color=#FF0000]Username and password not found[/color]'
+            Logger.error('Login: Username and password not found')
 
 class Home(Screen):
     pass
@@ -103,11 +104,11 @@ class Report(Screen):
 class log_str(CodeInput):
     def update(self, *args):
         s = ''
-        with open('log.txt', 'w') as f:
+        dir_open = os.path.join(kivy.kivy_home_dir, 'logs', '*')
+        '''with open('log.txt', 'w') as f:
             for i in LoggerHistory.history:
                 f.write(str(i) + '\n')
-        dir_open = os.path.join(kivy.kivy_home_dir, 'logs', '*')
-        Logger.info(dir_open)
+        Logger.info(dir_open)'''
         lastest_file = max(glob.glob(dir_open), key=os.path.getctime)
         with open(lastest_file,'r') as read_file:
             s = ''.join(read_file.read())

@@ -8,6 +8,7 @@ from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.screenmanager import Screen
+from kivy.logger import Logger
 import email2
 import csv
 import database
@@ -83,7 +84,7 @@ class Email(Screen):
             writer.writerow({'Time':k[0], 'ID':k[1],
             'Temperature':k[2], 'Humidity':k[3]})
 
-    def send(self, mode, number):
+    def send(self, mode, number: str):
         self.error_msg.text = ""
         all_list = []
         select_list = []
@@ -94,18 +95,24 @@ class Email(Screen):
 
         if not len(select_list):
             self.error_msg.text = "Please select email to send"
+            Logger.error('Email: Please select email to send')
         else:
             if mode == 'Email':
                 with open('result.csv', mode='w', newline='') as csv_file:
                     self.to_csv_email(all_list, csv_file)
                 email2.send_email_list(select_list, 'result.csv')
+                log = 'Email: Email lists are sent to ' + str(select_list)
+                Logger.info(log)
             else:
                 if number.isdigit():
                     with open('result.csv', mode='w', newline='') as csv_file:
                         self.to_csv_data(csv_file, int(number))
                     email2.send_email_list(select_list, 'result.csv')
+                    log = 'Email: ' + number + ' latest lines in the database are sent to ' + str(select_list)
+                    Logger.info(log)
                     #print(select_list)
                 else:
                     self.error_msg.text = "Invalid number"
+                    Logger.error('Email: Invalid number')
 
         

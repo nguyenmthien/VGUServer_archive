@@ -205,6 +205,10 @@
             orientation: 'horizontal'
             size_hint_y: 0.1
             pos_hint: {"top": 1}
+            Button:
+                text: 'O'
+                size_hint_x: .08
+                on_release: root.sts.update
             DefaultLabel:
                 text: "Logger"
                 bold: True
